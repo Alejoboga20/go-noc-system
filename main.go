@@ -5,7 +5,9 @@ import (
 	"time"
 
 	"github.com/Alejoboga20/go-noc-system/domain/usecases"
-	"github.com/Alejoboga20/go-noc-system/infrastructure"
+	datasources "github.com/Alejoboga20/go-noc-system/infrastructure/datasources"
+	repositories "github.com/Alejoboga20/go-noc-system/infrastructure/repositories"
+	services "github.com/Alejoboga20/go-noc-system/infrastructure/services"
 )
 
 func success() {
@@ -16,16 +18,19 @@ func failure() {
 	fmt.Println("Failure")
 }
 
-var INTERVAL = 10 * time.Second
+var INTERVAL = 1 * time.Second
 
 func main() {
 	ticker := time.NewTicker(INTERVAL)
 	defer ticker.Stop()
 
-	httpClient := infrastructure.NewHTTPClientImplementation()
+	httpClient := services.NewHTTPClientImplementation()
+	fileSystemDataSource := datasources.NewFileSystemDataSourceImplementation()
+	logRepository := repositories.NewLogRepositoryImplementation(fileSystemDataSource)
+
 	checkService := usecases.NewCheckServiceImplementation(
 		httpClient,
-		nil,
+		logRepository,
 		success,
 		failure)
 

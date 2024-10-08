@@ -3,6 +3,7 @@ package usecases
 import (
 	"fmt"
 
+	"github.com/Alejoboga20/go-noc-system/domain/repository"
 	"github.com/Alejoboga20/go-noc-system/domain/services"
 )
 
@@ -12,12 +13,12 @@ type CheckService interface {
 
 type CheckServiceImplementation struct {
 	HTTPClient    services.HTTPClient
-	LogRepository any
+	LogRepository repository.LogRepository
 	OnSuccess     func()
 	OnFailure     func()
 }
 
-func NewCheckServiceImplementation(httpClient services.HTTPClient, logRepository any, onSuccess func(), onFailure func()) CheckService {
+func NewCheckServiceImplementation(httpClient services.HTTPClient, logRepository repository.LogRepository, onSuccess func(), onFailure func()) CheckService {
 	return &CheckServiceImplementation{
 		HTTPClient:    httpClient,
 		LogRepository: logRepository,
