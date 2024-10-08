@@ -1,12 +1,16 @@
 package main
 
 import (
+	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/Alejoboga20/go-noc-system/domain/usecases"
 	datasources "github.com/Alejoboga20/go-noc-system/infrastructure/datasources"
 	repositories "github.com/Alejoboga20/go-noc-system/infrastructure/repositories"
 	services "github.com/Alejoboga20/go-noc-system/infrastructure/services"
+	"github.com/joho/godotenv"
 )
 
 func success() {
@@ -17,11 +21,25 @@ func failure() {
 
 }
 
-var INTERVAL = 1 * time.Second
-var filePath = "./logs"
+var WEB_SERVICE_URL = "https://www.google.com"
 
 func main() {
-	ticker := time.NewTicker(INTERVAL)
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	intervalStr := os.Getenv("PING_INTERVAL")
+	filePath := os.Getenv("FILE_PATH")
+
+	pingInterval, err := strconv.Atoi(intervalStr)
+
+	if err != nil {
+		log.Fatal("Error parsing PING_INTERVAL")
+	}
+
+	ticker := time.NewTicker(time.Duration(pingInterval) * time.Second)
 	defer ticker.Stop()
 
 	httpClient := services.NewHTTPClientImplementation()
@@ -35,6 +53,6 @@ func main() {
 		failure)
 
 	for range ticker.C {
-		checkService.Check("https://www.googles.com/")
+		checkService.Check(WEB_SERVICE_URL)
 	}
 }

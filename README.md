@@ -45,11 +45,8 @@ The project follows **Clean Architecture**, ensuring a scalable and testable cod
    ```
 3. Set Environment Variables: Create a `.env` file in the root directory and add the following:
    ```env
-   DB_HOST=localhost
-   DB_USER=user
-   DB_PASSWORD=password
-   DB_NAME=noc_db
-   SERVICES_TO_MONITOR=https://example.com,https://another-service.com
+   PING_INTERVAL=
+   FILE_PATH=
    ```
 4. Run the Application:
    ```bash
