@@ -45,6 +45,9 @@ The project follows **Clean Architecture**, ensuring a scalable and testable cod
    ```
 3. Set Environment Variables: Create a `.env` file in the root directory and add the following:
    ```env
+   WEB_SERVICE_URL_1=
+   WEB_SERVICE_URL_2=
+   WEB_SERVICE_URL_3=
    PING_INTERVAL=
    FILE_PATH=
    ```

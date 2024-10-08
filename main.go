@@ -35,7 +35,7 @@ func main() {
 		key := keyValuePair[0]
 		value := keyValuePair[1]
 
-		if strings.HasPrefix(key, "WEB_SERVICE_URL_") {
+		if strings.HasPrefix(key, "WEB_SERVICE_URL_") && value != "" {
 			webServices = append(webServices, value)
 		}
 	}
