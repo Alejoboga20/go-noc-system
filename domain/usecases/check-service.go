@@ -2,7 +2,9 @@ package usecases
 
 import (
 	"fmt"
+	"time"
 
+	"github.com/Alejoboga20/go-noc-system/domain/entities"
 	"github.com/Alejoboga20/go-noc-system/domain/repository"
 	"github.com/Alejoboga20/go-noc-system/domain/services"
 )
@@ -31,10 +33,24 @@ func (checkService *CheckServiceImplementation) Check(serviceUrl string) {
 	err := checkService.HTTPClient.GET(serviceUrl)
 
 	if err != nil {
-		fmt.Println("Error: ", err)
-		checkService.OnFailure()
+		log := entities.LogEnity{
+			Message:    fmt.Sprintf("Service is down: %s", err.Error()),
+			Level:      entities.HIGH,
+			ServiceURL: serviceUrl,
+			Origin:     "CheckService",
+			CreatedAt:  time.Now().Format(time.RFC3339),
+		}
+		checkService.LogRepository.SaveLog(log)
 		return
 	}
 
+	log := entities.LogEnity{
+		Message:    "Service is up",
+		Level:      entities.LOW,
+		ServiceURL: serviceUrl,
+		Origin:     "CheckService",
+		CreatedAt:  time.Now().Format(time.RFC3339),
+	}
+	checkService.LogRepository.SaveLog(log)
 	checkService.OnSuccess()
 }

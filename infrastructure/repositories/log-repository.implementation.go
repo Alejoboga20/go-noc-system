@@ -22,6 +22,6 @@ func (logRepository *LogRepositoryImplementation) GetLogs(severityLevel entities
 	return logs
 }
 
-func (logRepository *LogRepositoryImplementation) SaveLog(log string) {
+func (logRepository *LogRepositoryImplementation) SaveLog(log entities.LogEnity) {
 	logRepository.DataSource.SaveLog(log)
 }

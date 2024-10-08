@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/Alejoboga20/go-noc-system/domain/usecases"
@@ -11,21 +10,22 @@ import (
 )
 
 func success() {
-	fmt.Println("Success")
+
 }
 
 func failure() {
-	fmt.Println("Failure")
+
 }
 
 var INTERVAL = 1 * time.Second
+var filePath = "./logs"
 
 func main() {
 	ticker := time.NewTicker(INTERVAL)
 	defer ticker.Stop()
 
 	httpClient := services.NewHTTPClientImplementation()
-	fileSystemDataSource := datasources.NewFileSystemDataSourceImplementation()
+	fileSystemDataSource := datasources.NewFileSystemDataSourceImplementation(filePath)
 	logRepository := repositories.NewLogRepositoryImplementation(fileSystemDataSource)
 
 	checkService := usecases.NewCheckServiceImplementation(
@@ -35,6 +35,6 @@ func main() {
 		failure)
 
 	for range ticker.C {
-		checkService.Check("https://www.google.com/")
+		checkService.Check("https://www.googles.com/")
 	}
 }
